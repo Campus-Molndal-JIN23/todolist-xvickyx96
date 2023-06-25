@@ -15,18 +15,16 @@ Jag har skapat User klass och ToDo klass samt fasad klasserna för båda dessa k
 använt ovanstånde i en menu klass för att få en fungerande todolist med CRUD. Jag har även testat metoderna med mocko och JUnit tester med TDD.
 
 ## Planering
-
 ### Lösningsförslag innan uppgiften påbörjas
-
-#### Skisser (exempelvis)
-
-#### Hur du tänker försöka lösa uppgiften.(exempelvis)
+Planerar att först skapa User och ToDO klass. Sedan skapa fasader för dem för koppla till mongodb då jag föredrar för tydligheten att ha de lagrat på två olika ställen. Därefter är planen att göra en menu klass där jag 
+skapar alla metoder som behövs för att todo skall fungera. Därefter är tanken att på slutet ordna testerna. Jag kommer även skapa en scannerClass för att 
+inte ha massa scanners i min kod. 
 
 #### Pseudokod.(exempelvis)
 Skapa User klass. Skapa ToDO klass. Skapa fasad för User och Todo klasserna. Skapa menu klass.
-#### Diagram.(exempelvis)
 
 ### Jira/Trello/Github Project och projekthantering enligt Scrum/Kanban
+Jag har använt mig av klassiska Trello med todo, doing och done. Kommer skicka med en bild på det med inlämningen.
 
 ## Arbetet och dess genomförande
 ### Vad som varit svårt
