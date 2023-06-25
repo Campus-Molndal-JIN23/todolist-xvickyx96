@@ -13,7 +13,7 @@ public class Menu {
 
     public void MenuStart() {
 
-        System.out.println("Welcome to your ToDo list");
+        System.out.println("Welcome to your ToDo-list");
         boolean keepRunning = true;
 
             while (keepRunning) {
