@@ -35,45 +35,54 @@ public class Menu {
                 System.out.println("----------------------------------");
                 System.out.println("12. Exit.");
                 System.out.print("Enter your choice: ");
-                int choice = scannerClass.readInteger();
+                String input = scannerClass.readString();
 
-                switch (choice) {
-                    case 1:
-                        showAllTask();
-                        break;
-                    case 2:
-                        findTask();
-                        break;
-                    case 3:
-                        createTask();
-                        break;
-                    case 4:
-                        updateTask();
-                        break;
-                    case 5:
-                        deleteTask();
-                        break;
-                    case 6:
-                    showAllUser();
-                        break;
-                    case 7:
-                        findUser();
-                        break;
-                    case 8:
-                        createUser();
-                        break;
-                    case 9:
-                        updateUser();
-                        break;
+                try {
+                    int choice = Integer.parseInt(input);
+                    switch (choice) {
+                        case 1:
+                            showAllTask();
+                            break;
+                        case 2:
+                            findTask();
+                            break;
+                        case 3:
+                            createTask();
+                            break;
+                        case 4:
+                            updateTask();
+                            break;
+                        case 5:
+                            deleteTask();
+                            break;
+                        case 6:
+                            showAllUser();
+                            break;
+                        case 7:
+                            findUser();
+                            break;
+                        case 8:
+                            createUser();
+                            break;
+                        case 9:
+                            updateUser();
+                            break;
 
-                    case 10:
-                        deleteUser();
-                        break;
-                    case 11:
-                        findTasksByAssignedTo();
-                        break;
-                    case 12:
-                    keepRunning = false;
+                        case 10:
+                            deleteUser();
+                            break;
+                        case 11:
+                            findTasksByAssignedTo();
+                            break;
+                        case 12:
+                            keepRunning = false;
+                        default:
+                            System.out.println("Invalid choice!");
+                            break;
+                    }
+                }
+                catch (NumberFormatException e) {
+                    System.out.println("Invalid input! Please enter a number.");
                 }
             }
 
