@@ -157,4 +157,47 @@ class MongoDBUserFasadTest {
         assertEquals(users.size(), actualArray.size());
         assertArrayEquals(users.toArray(), actualArray.toArray());
     }
+
+
+    // Testar när användare försöker uppdatera med ID som inte existerar i databasen
+    @Test
+    void updateOne_NonExistingUser() {
+        User user = new User(5, "John", 40);
+        Document filter = new Document("userID", 5);
+        Document update = new Document("$set", user.toDoc());
+        UpdateResult mockResult = mock(UpdateResult.class);
+        when(mockCollection.updateOne(Mockito.any(Document.class), Mockito.any(Document.class))).thenReturn(mockResult);
+        when(mockResult.getMatchedCount()).thenReturn(0L);
+
+        mongoDBUser.updateOne(5, user);
+
+        Mockito.verify(mockCollection).updateOne(filter, update);
+    }
+
+    // Testar när användare försöker radera med ID som inte existerar i databasen
+    @Test
+    void delete_NonExistingUser() {
+        Document doc = new Document("userID", 5);
+        DeleteResult mockResult = mock(DeleteResult.class);
+        when(mockCollection.deleteOne(Mockito.any(Document.class))).thenReturn(mockResult);
+        when(mockResult.getDeletedCount()).thenReturn(0L);
+
+        mongoDBUser.Delete(5);
+
+        Mockito.verify(mockCollection).deleteOne(doc);
+    }
+
+    // Testar när användare försöker hitta en User som inte existerar i databasen
+    @Test
+    void findByID_NonExistingUser() {
+        FindIterable<Document> mockFindIterable = Mockito.mock(FindIterable.class);
+
+        when(mockCollection.find(Mockito.any(Document.class))).thenReturn(mockFindIterable);
+        when(mockFindIterable.first()).thenReturn(null);
+
+        User actualUser = mongoDBUser.FindByID(5);
+
+        assertNull(actualUser);
+    }
+
 }

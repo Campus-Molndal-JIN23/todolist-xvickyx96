@@ -128,38 +128,38 @@ class MongoDBFasadToDoTest {
     // Testar hämtar alla med task med assignedto 2
     @Test
     void findByAssignedTo() {
-            FindIterable<Document> mockFindIterable = Mockito.mock(FindIterable.class);
+        FindIterable<Document> mockFindIterable = Mockito.mock(FindIterable.class);
 
-            when(mockCollection.find(Mockito.any(Document.class))).thenReturn(mockFindIterable);
+        when(mockCollection.find(Mockito.any(Document.class))).thenReturn(mockFindIterable);
 
-            List<Document> mockDocuments = new ArrayList<>();
-            mockDocuments.add(toDo2.toDoc());
-            mockDocuments.add(toDo3.toDoc());
-            mockDocuments.add(toDo4.toDoc());
+        List<Document> mockDocuments = new ArrayList<>();
+        mockDocuments.add(toDo2.toDoc());
+        mockDocuments.add(toDo3.toDoc());
+        mockDocuments.add(toDo4.toDoc());
 
-            MongoCursor<Document> mockCursor = Mockito.mock(MongoCursor.class);
-            when(mockFindIterable.iterator()).thenReturn(mockCursor);
-            when(mockCursor.hasNext()).thenReturn(true, true, true, false);
-            when(mockCursor.next()).thenReturn(mockDocuments.get(0), mockDocuments.get(1), mockDocuments.get(2));
+        MongoCursor<Document> mockCursor = Mockito.mock(MongoCursor.class);
+        when(mockFindIterable.iterator()).thenReturn(mockCursor);
+        when(mockCursor.hasNext()).thenReturn(true, true, true, false);
+        when(mockCursor.next()).thenReturn(mockDocuments.get(0), mockDocuments.get(1), mockDocuments.get(2));
 
-            ArrayList<ToDO> actualTodos = mongoDBToDoFasad.findByAssignedTo(2);
+        ArrayList<ToDO> actualTodos = mongoDBToDoFasad.findByAssignedTo(2);
 
-            assertEquals(3, actualTodos.size());
-            assertEquals(toDo2.getId(), actualTodos.get(0).getId());
-            assertEquals(toDo2.getText(), actualTodos.get(0).getText());
-            assertEquals(toDo2.getDone(), actualTodos.get(0).getDone());
-            assertEquals(toDo2.getAssignedTo(), actualTodos.get(0).getAssignedTo());
+        assertEquals(3, actualTodos.size());
+        assertEquals(toDo2.getId(), actualTodos.get(0).getId());
+        assertEquals(toDo2.getText(), actualTodos.get(0).getText());
+        assertEquals(toDo2.getDone(), actualTodos.get(0).getDone());
+        assertEquals(toDo2.getAssignedTo(), actualTodos.get(0).getAssignedTo());
 
-            assertEquals(toDo3.getId(), actualTodos.get(1).getId());
-            assertEquals(toDo3.getText(), actualTodos.get(1).getText());
-            assertEquals(toDo3.getDone(), actualTodos.get(1).getDone());
-            assertEquals(toDo3.getAssignedTo(), actualTodos.get(1).getAssignedTo());
+        assertEquals(toDo3.getId(), actualTodos.get(1).getId());
+        assertEquals(toDo3.getText(), actualTodos.get(1).getText());
+        assertEquals(toDo3.getDone(), actualTodos.get(1).getDone());
+        assertEquals(toDo3.getAssignedTo(), actualTodos.get(1).getAssignedTo());
 
-            assertEquals(toDo4.getId(), actualTodos.get(2).getId());
-            assertEquals(toDo4.getText(), actualTodos.get(2).getText());
-            assertEquals(toDo4.getDone(), actualTodos.get(2).getDone());
-            assertEquals(toDo4.getAssignedTo(), actualTodos.get(2).getAssignedTo());
-        }
+        assertEquals(toDo4.getId(), actualTodos.get(2).getId());
+        assertEquals(toDo4.getText(), actualTodos.get(2).getText());
+        assertEquals(toDo4.getDone(), actualTodos.get(2).getDone());
+        assertEquals(toDo4.getAssignedTo(), actualTodos.get(2).getAssignedTo());
+    }
 
 
 
@@ -205,17 +205,48 @@ class MongoDBFasadToDoTest {
         assertArrayEquals(todos.toArray(), actualArray.toArray());
     }
 
+    // Testar när användare försöker uppdatera med ID som inte existerar i databasen
+    @Test
+    void updateOne_NonExistingTask() {
+        ToDO toDo = new ToDO(10, "Task 1", false, 1);
+        Document filter = new Document("id", 10);
+        Document update = new Document("$set", toDo.toDoc());
+        UpdateResult mockResult = mock(UpdateResult.class);
+        when(mockCollection.updateOne(Mockito.any(Document.class), Mockito.any(Document.class))).thenReturn(mockResult);
+        when(mockResult.getMatchedCount()).thenReturn(0L);
 
+        mongoDBToDoFasad.updateOne(10, toDo);
+
+        Mockito.verify(mockCollection).updateOne(filter, update);
+    }
+
+    // Testar när användare försöker radera med ID som inte existerar i databasen
+    @Test
+    void delete_NonExistingUser() {
+        Document doc = new Document("id", 10);
+        DeleteResult mockResult = mock(DeleteResult.class);
+        when(mockCollection.deleteOne(Mockito.any(Document.class))).thenReturn(mockResult);
+        when(mockResult.getDeletedCount()).thenReturn(0L);
+
+        mongoDBToDoFasad.Delete(10);
+
+        Mockito.verify(mockCollection).deleteOne(doc);
+    }
+
+    // Testar när användare försöker hitta en task som inte existerar i databasen
+    @Test
+    void findByID_NonExistingUser() {
+        FindIterable<Document> mockFindIterable = Mockito.mock(FindIterable.class);
+
+        when(mockCollection.find(Mockito.any(Document.class))).thenReturn(mockFindIterable);
+        when(mockFindIterable.first()).thenReturn(null);
+
+        ToDO actualToDo = mongoDBToDoFasad.FindByID(10);
+
+        assertNull(actualToDo);
+    }
 
 }
-
-
-
-
-
-
-
-
 
 
 

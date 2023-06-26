@@ -39,7 +39,7 @@ public class User {
 
 
     public String toString() {
-        return "User ID " + getUserID() + ": " + getName() + " is " + getAge() + " old.";
+        return "User ID " + getUserID() + ": " + getName() + " is " + getAge() + " years old.";
     }
 
     public Document toDoc() {
